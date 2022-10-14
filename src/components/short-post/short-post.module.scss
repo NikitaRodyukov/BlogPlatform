@@ -1,0 +1,189 @@
+.short-post {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.6rem;
+  padding: 1.4rem;
+  background-color: white;
+  border-radius: 5px;
+  filter: drop-shadow(0px 4px 12px rgba(0, 0, 0, 0.15));
+
+  .left-part {
+    display: flex;
+    flex-direction: column;
+    margin-right: 3rem;
+
+    .title {
+      margin-right: 0.8rem;
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 1.5rem;
+      line-height: 140%;
+      color: #1890ff;
+    }
+
+    .top-part {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+
+      .favorites-count {
+        margin-left: 0.5rem;
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1.2rem;
+        line-height: 183%;
+        color: rgba(0, 0, 0, 0.75);
+      }
+    }
+
+    .tags {
+      display: flex;
+      gap: 0.4rem;
+      .tag {
+        box-sizing: border-box;
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        border-radius: 2px;
+        padding: 0.4rem;
+
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 0.75rem;
+        line-height: 100%;
+        color: rgba(0, 0, 0, 0.5);
+      }
+    }
+    .description {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 183%;
+
+      color: rgba(0, 0, 0, 0.75);
+    }
+  }
+
+  .author {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+
+    .left-side {
+      display: flex;
+      flex-direction: column;
+      margin-right: 1rem;
+
+      .name {
+        display: flex;
+        justify-content: flex-end;
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1.5rem;
+        line-height: 156%;
+      }
+
+      .post-date {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1rem;
+        line-height: 183%;
+
+        color: rgba(0, 0, 0, 0.5);
+      }
+    }
+
+    .image {
+      max-height: 4rem;
+      max-width: 4rem;
+    }
+  }
+}
+
+@media (max-width: 835px) {
+  .short-post {
+    margin-bottom: 1rem;
+    padding: 1rem;
+
+    .left-part {
+      margin-right: 3rem;
+
+      .title {
+        margin-right: 0.8rem;
+        font-size: 1.3rem;
+        line-height: 140%;
+      }
+
+      .top-part {
+        .favorites-count {
+          font-size: 1.2rem;
+        }
+      }
+
+      .tags {
+        .tag {
+          font-size: 0.55rem;
+        }
+      }
+      .description {
+        font-size: 0.8rem;
+        line-height: 183%;
+      }
+    }
+
+    .author {
+      .left-side {
+        margin-right: 1rem;
+
+        .name {
+          font-size: 1.3rem;
+          line-height: 156%;
+        }
+
+        .post-date {
+          font-size: 0.8rem;
+        }
+      }
+
+      .image {
+        max-height: 4rem;
+        max-width: 4rem;
+      }
+    }
+  }
+}
+@media (max-width: 712px) {
+  .short-post {
+    .left-part {
+      .title {
+        width: 45%;
+      }
+    }
+  }
+}
+
+@media (max-width: 570px) {
+  .short-post {
+    flex-direction: column;
+
+    .left-part {
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+
+      .top-part {
+        width: 80%;
+        justify-content: center;
+      }
+    }
+
+    .author {
+      justify-content: center;
+    }
+  }
+}

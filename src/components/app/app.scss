@@ -1,0 +1,14 @@
+@import '~antd/dist/antd.css';
+
+.app {
+  background-color: #ebeef3;
+  min-height: 100vh;
+}
+
+ul.ant-pagination {
+  display: flex;
+  justify-content: center;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+@import-normalize;
