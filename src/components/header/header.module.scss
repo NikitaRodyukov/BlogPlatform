@@ -21,9 +21,18 @@
     display: flex;
     .btn {
       &__sign-in {
+        display: flex;
+        align-items: center;
         margin-right: 1.2rem;
         background-color: transparent;
         border: none;
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1.2rem;
+        line-height: 156%;
+
+        color: rgb(0, 0, 0);
       }
 
       &__sign-up {

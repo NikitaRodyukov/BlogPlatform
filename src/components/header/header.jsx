@@ -9,12 +9,12 @@ export default function Header() {
         Realworld Blog
       </Link>
       <div className={classes['btns-block']}>
-        <button type="button" className={classes['btn__sign-in']}>
+        <Link to="/sign-in" className={classes['btn__sign-in']}>
           Sign In
-        </button>
-        <button type="button" className={classes['btn__sign-up']}>
+        </Link>
+        <Link to="/sign-up" className={classes['btn__sign-up']}>
           Sign Up
-        </button>
+        </Link>
       </div>
     </div>
   )
