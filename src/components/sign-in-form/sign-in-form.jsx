@@ -2,15 +2,16 @@
 import { useForm } from 'react-hook-form'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 
-import { signUp } from '../../actions/sign-up'
+import { signIn } from '../../actions/sign-in'
 
 import classes from './sign-in-form.module.scss'
 
 export default function SignInForm() {
+  const isLogedIn = useSelector((state) => state.currentUser.user)
   const dispatch = useDispatch()
-  const signUpError = useSelector((state) => state.signUpStatus.errors || {})
+  const signInError = useSelector((state) => state.signInStatus.errors || {})
 
   const {
     register,
@@ -26,9 +27,10 @@ export default function SignInForm() {
   }, [setFocus])
 
   const onSubmit = (data) => {
-    dispatch(signUp(data))
+    dispatch(signIn(data))
   }
 
+  if (isLogedIn) return <Redirect to="/" />
   return (
     <div className={classes['sign-up-form']}>
       <h2>Sign In</h2>
@@ -39,6 +41,9 @@ export default function SignInForm() {
             id="email"
             type="email"
             placeholder="Email address"
+            onClick={() => {
+              dispatch({ type: 'CLEAR_ERROR' })
+            }}
             {...register('email', {
               required: {
                 value: true,
@@ -46,7 +51,6 @@ export default function SignInForm() {
               },
             })}
           />
-          {signUpError.email && <p>Этот адрес почты уже занят</p>}
           {errors.email && <p>{errors.email.message}</p>}
         </label>
 
@@ -57,6 +61,9 @@ export default function SignInForm() {
             type="password"
             placeholder="Password"
             style={errors.password && { border: '1px solid red' }}
+            onClick={() => {
+              dispatch({ type: 'CLEAR_ERROR' })
+            }}
             {...register('password', {
               required: {
                 value: true,
@@ -72,13 +79,23 @@ export default function SignInForm() {
               },
             })}
           />
-          {errors.password && <p>{errors.password.message}</p>}
+          {errors.password && (
+            <p className={classes['error-message']}>
+              {errors.password.message}
+            </p>
+          )}
         </label>
+
+        {signInError['email or password'] && (
+          <p className={classes['error-message']}>
+            Ошибка ввода пароля или адреса почты
+          </p>
+        )}
 
         <input type="submit" value="Login" />
       </form>
       <div className={classes.redirect}>
-        Don’t have an account? <Link to="/sign-up">Sign Up</Link>
+        Don`t have an account? <Link to="/sign-up">Sign Up</Link>
       </div>
     </div>
   )

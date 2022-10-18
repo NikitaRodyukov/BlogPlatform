@@ -2,7 +2,7 @@
 import { useForm } from 'react-hook-form'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 
 import { signUp } from '../../actions/sign-up'
 
@@ -11,7 +11,7 @@ import classes from './sign-up-form.module.scss'
 export default function SignUpForm() {
   const dispatch = useDispatch()
   const signUpError = useSelector((state) => state.signUpStatus.errors || {})
-
+  const isRegistered = useSelector((state) => state.signUpStatus.user)
   const {
     register,
     handleSubmit,
@@ -28,7 +28,7 @@ export default function SignUpForm() {
   const onSubmit = (data) => {
     dispatch(signUp(data))
   }
-
+  if (isRegistered) return <Redirect to="/sign-in" />
   return (
     <div className={classes['sign-up-form']}>
       <h2>Create new account</h2>
@@ -79,6 +79,9 @@ export default function SignUpForm() {
             }
             type="email"
             placeholder="Email address"
+            onClick={() => {
+              dispatch({ type: 'CLEAR_ERROR' })
+            }}
             {...register('email', {
               required: {
                 value: true,

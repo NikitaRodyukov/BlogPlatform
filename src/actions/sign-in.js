@@ -1,25 +1,31 @@
-export const signUp = (signUpData) => (dispatch) => {
+export const signIn = (signInData) => (dispatch) => {
   const requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ user: signUpData }),
+    body: JSON.stringify({ user: signInData }),
   }
+
   dispatch({
-    type: 'SIGN_UP',
+    type: 'SIGN_IN',
   })
 
-  fetch('https://blog.kata.academy/api/users', requestOptions).then(
+  fetch('https://blog.kata.academy/api/users/login', requestOptions).then(
     async (response) => {
       const answer = await response.json()
 
       if (!response.ok) {
         dispatch({
-          type: 'REGESTRATION_ERROR',
+          type: 'SIGN_IN_ERROR',
           data: answer,
         })
       } else {
         dispatch({
-          type: 'RECEIVED_USER',
+          type: 'SIGN_IN_OK',
+          data: answer.user.token,
+        })
+
+        dispatch({
+          type: 'UPDATE_OK',
           data: answer,
         })
       }
@@ -28,4 +34,4 @@ export const signUp = (signUpData) => (dispatch) => {
   )
 }
 
-export default signUp
+export default signIn

@@ -44,4 +44,25 @@
       }
     }
   }
+
+  .user-block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+
+    .user-image {
+      width: 46px;
+      height: 46px;
+      border-radius: 5px;
+    }
+
+    .log-out {
+      padding: 0.4rem 1.2rem 0.6rem 1.2rem;
+      border: 1px solid black;
+      background-color: transparent;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  }
 }

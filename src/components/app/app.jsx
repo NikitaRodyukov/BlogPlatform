@@ -15,7 +15,7 @@ function App() {
         <Header />
         <Switch>
           <Route path="/" component={PostsPage} exact />
-          <Route path="/articles" component={PostsPage} exact />
+          <Route path="/articles/" component={PostsPage} exact />
           <Route path="/sign-up" component={SignUpForm} exact />
           <Route path="/sign-in" component={SignInForm} exact />
           <Route

@@ -79,6 +79,7 @@
     background: #1890ff;
     border-radius: 4px;
     color: #ffffff;
+    cursor: pointer;
   }
 
   .redirect {
@@ -91,5 +92,13 @@
 
     color: #8c8c8c;
     letter-spacing: 0.05rem;
+  }
+
+  .validate-error {
+    border: 1px solid red;
+  }
+
+  .error-message {
+    color: red;
   }
 }
