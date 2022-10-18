@@ -13,10 +13,9 @@ import App from './components/app/app'
 
 const store = createStore(
   allReducers,
-  compose(
-    applyMiddleware(thunk),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-  )
+  compose(applyMiddleware(thunk), {
+    /* window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__() */
+  })
 )
 
 const root = createRoot(document.getElementById('root'))
