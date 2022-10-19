@@ -12,6 +12,10 @@ const signInReducer = (state = {}, action) => {
     case 'CLEAR_ERROR':
       return {}
 
+    case 'LOG_OUT':
+      localStorage.removeItem('token')
+      return {}
+
     default:
       return state
   }

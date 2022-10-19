@@ -9,7 +9,6 @@ const currentUserReducer = (state = {}, action) => {
       return data
 
     case 'LOG_OUT':
-      localStorage.removeItem('token')
       return {}
 
     default:

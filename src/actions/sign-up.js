@@ -1,4 +1,4 @@
-export const signUp = (signUpData) => (dispatch) => {
+const signUp = (signUpData) => (dispatch) => {
   const requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

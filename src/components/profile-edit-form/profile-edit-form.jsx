@@ -2,23 +2,24 @@
 import { useForm } from 'react-hook-form'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 
-import signUp from '../../actions/sign-up'
+import updateProfile from '../../actions/update-profile'
+import getCurrentUser from '../../actions/get-current-user'
 
-import classes from './sign-up-form.module.scss'
+import classes from './profile-edit-form.module.scss'
 
-export default function SignUpForm() {
+export default function ProfileEditForm() {
   const dispatch = useDispatch()
+  const { user } = useSelector((state) => state.currentUser)
+  const token = localStorage.getItem('token')
   const signUpError = useSelector((state) => state.signUpStatus.errors || {})
-  const isRegistered = useSelector((state) => state.signUpStatus.user)
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     setFocus,
-    getValues,
   } = useForm()
 
   useEffect(() => {
@@ -27,25 +28,34 @@ export default function SignUpForm() {
   }, [setFocus])
 
   const onSubmit = (data) => {
-    dispatch(signUp(data))
+    if (data.image === '') {
+      const newData = JSON.parse(JSON.stringify(data))
+      newData.image = user.image
+      dispatch(updateProfile(newData))
+    } else {
+      dispatch(updateProfile(data))
+    }
+
+    if (!signUpError.email && !signUpError.username) {
+      dispatch(getCurrentUser(token))
+    }
   }
 
-  if (isRegistered) return <Redirect to="/sign-in" />
+  if (!user) {
+    return <Redirect to="/" />
+  }
 
   return (
     <div className={classes['sign-up-form']}>
-      <h2>Create new account</h2>
+      <h2>Edit Profile</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor="username">
           Username
           <input
-            className={
-              (signUpError.username || errors.username) &&
-              classes['validate-error']
-            }
             id="username"
             type="text"
             placeholder="Username"
+            defaultValue={user.username || ''}
             onClick={() => {
               dispatch({ type: 'CLEAR_ERROR' })
             }}
@@ -77,11 +87,9 @@ export default function SignUpForm() {
           Email address
           <input
             id="email"
-            className={
-              (signUpError.email || errors.email) && classes['validate-error']
-            }
             type="email"
             placeholder="Email address"
+            defaultValue={user.email || ''}
             onClick={() => {
               dispatch({ type: 'CLEAR_ERROR' })
             }}
@@ -106,7 +114,7 @@ export default function SignUpForm() {
           <input
             id="password"
             type="password"
-            placeholder="Password"
+            placeholder="New password"
             className={errors.password && classes['validate-error']}
             {...register('password', {
               required: {
@@ -129,52 +137,26 @@ export default function SignUpForm() {
             </p>
           )}
         </label>
-        <label htmlFor="repeat_password">
-          Repeat Password
+        <label htmlFor="url">
+          Avatar image (url)
           <input
-            id="repeat_password"
-            type="password"
-            placeholder="Password"
-            className={errors.repeat_password && classes['validate-error']}
-            {...register('repeat_password', {
-              required: {
-                value: true,
-                message: 'Поле необходимо заполнить',
+            type="url"
+            id="url"
+            className={errors.url && classes['validate-error']}
+            placeholder="Avatar image"
+            {...register('image', {
+              pattern: {
+                value: /^http.*\.(jpeg|jpg|gif|png)$/,
+                message: 'Please enter a valid image link',
               },
             })}
           />
-          {getValues('repeat_password') !== getValues('password') && (
-            <p className={classes['error-message']}>Пароли должны совпадать!</p>
+          {errors.image && (
+            <p className={classes['error-message']}>{errors.image.message}</p>
           )}
         </label>
-
-        <div className={classes.divider} />
-
-        <label htmlFor="checkbox">
-          <input
-            id="checkbox"
-            type="checkbox"
-            placeholder="checkbox"
-            {...register('checkbox', {
-              required: {
-                value: true,
-                message: 'Необходимо согласиться с требованиями',
-              },
-            })}
-          />
-          {errors.checkbox && (
-            <p className={classes['error-message']}>
-              {errors.checkbox.message}
-            </p>
-          )}
-          <p>I agree to the processing of my personal information</p>
-          <span className={classes.checkmark} />
-        </label>
-        <input type="submit" value="Create" />
+        <input type="submit" value="Save" />
       </form>
-      <div className={classes.redirect}>
-        Don’t have an account? <Link to="/sign-in">Sign In</Link>
-      </div>
     </div>
   )
 }

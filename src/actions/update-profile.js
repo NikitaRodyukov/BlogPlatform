@@ -1,14 +1,16 @@
-const getCurrentUser = (token) => (dispatch) => {
+const updateProfile = (data) => (dispatch) => {
+  const token = localStorage.getItem('token')
+
   const requestOptions = {
-    method: 'GET',
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Token ${token}`,
     },
+    body: JSON.stringify({ user: data }),
   }
-
   dispatch({
-    type: 'GET_CURRENT_USER',
+    type: 'UPDATE_PROFILE',
   })
 
   fetch('https://blog.kata.academy/api/user', requestOptions).then(
@@ -17,12 +19,12 @@ const getCurrentUser = (token) => (dispatch) => {
 
       if (!response.ok) {
         dispatch({
-          type: 'UPDATE_ERROR',
+          type: 'REGESTRATION_ERROR',
           data: answer,
         })
       } else {
         dispatch({
-          type: 'UPDATE_OK',
+          type: 'RECEIVED_PROFILE',
           data: answer,
         })
       }
@@ -31,4 +33,4 @@ const getCurrentUser = (token) => (dispatch) => {
   )
 }
 
-export default getCurrentUser
+export default updateProfile

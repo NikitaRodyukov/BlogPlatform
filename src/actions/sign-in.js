@@ -1,4 +1,4 @@
-export const signIn = (signInData) => (dispatch) => {
+const signIn = (signInData) => (dispatch) => {
   const requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -22,11 +22,6 @@ export const signIn = (signInData) => (dispatch) => {
         dispatch({
           type: 'SIGN_IN_OK',
           data: answer.user.token,
-        })
-
-        dispatch({
-          type: 'UPDATE_OK',
-          data: answer,
         })
       }
       return answer

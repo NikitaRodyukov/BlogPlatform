@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { Pagination } from 'antd'
 
-import { getPosts } from '../../actions/get-posts'
+import getPosts from '../../actions/get-posts'
 import updateCurrentPage from '../../actions/update-current-page'
 import ShortPost from '../short-post/short-post'
 
@@ -59,6 +59,7 @@ export default function PostsPage() {
           dispatch(getPosts(page - 1))
         }}
         current={currentPage}
+        size="small"
         total={articlesCount}
         defaultPageSize={6}
         showSizeChanger={false}

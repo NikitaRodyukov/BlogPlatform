@@ -5,6 +5,8 @@ import Header from '../header/header'
 import FullPostPage from '../full-post-page/full-post-page'
 import SignUpForm from '../sign-up-form/sign-up-form'
 import SignInForm from '../sign-in-form/sign-in-form'
+import ProfileEditForm from '../profile-edit-form/profile-edit-form'
+import PostForm from '../post-form/post-form'
 
 import './app.scss'
 
@@ -16,8 +18,10 @@ function App() {
         <Switch>
           <Route path="/" component={PostsPage} exact />
           <Route path="/articles/" component={PostsPage} exact />
+          <Route path="/new-article" component={PostForm} exact />
           <Route path="/sign-up" component={SignUpForm} exact />
           <Route path="/sign-in" component={SignInForm} exact />
+          <Route path="/profile" component={ProfileEditForm} exact />
           <Route
             path="/:slug"
             render={({ match }) => {

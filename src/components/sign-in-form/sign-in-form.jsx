@@ -4,12 +4,12 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
 
-import { signIn } from '../../actions/sign-in'
+import signIn from '../../actions/sign-in'
 
 import classes from './sign-in-form.module.scss'
 
 export default function SignInForm() {
-  const isLogedIn = useSelector((state) => state.currentUser.user)
+  const isLogedIn = useSelector((state) => state.signInStatus.status)
   const dispatch = useDispatch()
   const signInError = useSelector((state) => state.signInStatus.errors || {})
 
@@ -30,7 +30,10 @@ export default function SignInForm() {
     dispatch(signIn(data))
   }
 
-  if (isLogedIn) return <Redirect to="/" />
+  if (isLogedIn) {
+    return <Redirect to="/" />
+  }
+
   return (
     <div className={classes['sign-up-form']}>
       <h2>Sign In</h2>

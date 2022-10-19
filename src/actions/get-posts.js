@@ -1,4 +1,4 @@
-export const getPosts = (currentPostsAdded) => (dispatch) => {
+const getPosts = (currentPostsAdded) => (dispatch) => {
   const postPerPage = 6
   dispatch({
     type: 'DATA_LOAD_TRUE',

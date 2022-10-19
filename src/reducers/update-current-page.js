@@ -5,6 +5,9 @@ const updateCurrentPageReducer = (state = 1, action) => {
     case 'PAGE_NUMBER_UPDATE':
       return page
 
+    case 'RETURN_TO_PAGE_1':
+      return 1
+
     default:
       return state
   }
