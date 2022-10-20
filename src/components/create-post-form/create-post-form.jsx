@@ -1,21 +1,23 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { useForm } from 'react-hook-form'
-// import { useDispatch, useSelector } from 'react-redux'
-// import { Redirect } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 import { useState } from 'react'
 // import updateProfile from '../../actions/update-profile'
 // import getCurrentUser from '../../actions/get-current-user'
 
-import classes from './post-form.module.scss'
+import postArticle from '../../actions/post-article'
 
-export default function PostForm() {
-  const [tagKeyValue, addKeyValue] = useState(0)
-  const [tags, editTagsArr] = useState([])
+import classes from './create-post-form.module.scss'
 
-  // const dispatch = useDispatch()
-  // const { user } = useSelector((state) => state.currentUser)
-  // const token = localStorage.getItem('token')
-  // const signUpError = useSelector((state) => state.signUpStatus.errors || {})
+export default function CreatePostForm() {
+  const [tagKeyValue, addKeyValue] = useState(1)
+  const [tags, editTagsArr] = useState([{ id: 0, value: '' }])
+  const [postStatus, editPostStatus] = useState(false)
+
+  const dispatch = useDispatch()
+  const { user } = useSelector((state) => state.currentUser)
+  const token = localStorage.getItem('token')
 
   const {
     register,
@@ -24,40 +26,43 @@ export default function PostForm() {
   } = useForm()
 
   const onSubmit = (data) => {
-    data.tags = tags.map(({ value }) => value)
-    console.log(data)
+    data.tagList = tags.map(({ value }) => value)
+    dispatch(postArticle(data, token))
+    editPostStatus(true)
   }
 
   const deleteTag = (id) =>
-    editTagsArr((oldTagData) => {
-      const idx = oldTagData.findIndex((el) => id === el.id)
-      return [...oldTagData.slice(0, idx), ...oldTagData.slice(idx + 1)]
+    editTagsArr((tagsList) => {
+      const idx = tagsList.findIndex((el) => id === el.id)
+
+      return [...tagsList.slice(0, idx), ...tagsList.slice(idx + 1)]
     })
 
   const addTag = (id) =>
-    editTagsArr((oldTagData) => [...oldTagData, { id, value: '' }])
+    editTagsArr((tagsList) => [...tagsList, { id, value: '' }])
 
   const editTagValue = (id, text) =>
-    editTagsArr((oldTagData) => {
-      const idx = oldTagData.findIndex((el) => id === el.id)
+    editTagsArr((tagsList) => {
+      const idx = tagsList.findIndex((el) => id === el.id)
+
       const updatedItem = {
-        ...oldTagData[idx],
+        ...tagsList[idx],
         value: text,
       }
 
       return [
-        ...oldTagData.slice(0, idx),
+        ...tagsList.slice(0, idx),
         updatedItem,
-        ...oldTagData.slice(idx + 1),
+        ...tagsList.slice(idx + 1),
       ]
     })
 
-  // if (!user) {
-  //  return <Redirect to="/" />
-  // }
+  if (!user || postStatus) {
+    return <Redirect to="/" />
+  }
 
   return (
-    <div className={classes['sign-up-form']}>
+    <div className={classes['post-form']}>
       <h2>Create new article</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor="text">
@@ -102,7 +107,7 @@ export default function PostForm() {
           Text
           <textarea
             placeholder="Enter your text..."
-            {...register('text', {
+            {...register('body', {
               required: {
                 value: true,
                 message: 'Поле обязательно для заполнения',
@@ -110,27 +115,36 @@ export default function PostForm() {
               min: 5,
             })}
           />
-          {errors.text && (
-            <p className={classes['error-message']}>{errors.text.message}</p>
+          {errors.body && (
+            <p className={classes['error-message']}>{errors.body.message}</p>
           )}
         </label>
-        <label htmlFor="tags">
+        <label htmlFor="tags" className={classes.tags}>
           Tags
           {tags.map(({ id, value }) => (
-            <div className="tag" key={id}>
+            <div className={classes.tag} key={id}>
               <input
                 type="text"
                 defaultValue={value}
                 onChange={(e) => editTagValue(id, e.target.value)}
               />
-              <button type="button" onClick={() => deleteTag(id)}>
+              <button
+                type="button"
+                className={classes['delete-tag']}
+                onClick={() => {
+                  if (tags.length === 1) {
+                    return
+                  }
+                  deleteTag(id)
+                }}
+              >
                 Delete
               </button>
             </div>
           ))}
           <button
             type="button"
-            className="add-tag"
+            className={classes['add-tag']}
             onClick={() => {
               addKeyValue((value) => value + 1)
               addTag(tagKeyValue)

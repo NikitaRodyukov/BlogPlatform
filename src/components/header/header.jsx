@@ -25,7 +25,9 @@ export default function Header() {
 
   const userBlock = user && (
     <div className={classes['user-block']}>
-      <Link to="/new-article">Create article</Link>
+      <Link className={classes.create} to="/new-article">
+        Create article
+      </Link>
       <Link to="/profile">
         <div>{user.username}</div>
       </Link>

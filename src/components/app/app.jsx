@@ -6,7 +6,8 @@ import FullPostPage from '../full-post-page/full-post-page'
 import SignUpForm from '../sign-up-form/sign-up-form'
 import SignInForm from '../sign-in-form/sign-in-form'
 import ProfileEditForm from '../profile-edit-form/profile-edit-form'
-import PostForm from '../post-form/post-form'
+import CreatePostForm from '../create-post-form/create-post-form'
+import EditPostForm from '../edit-post-form/edit-post-form'
 
 import './app.scss'
 
@@ -18,15 +19,23 @@ function App() {
         <Switch>
           <Route path="/" component={PostsPage} exact />
           <Route path="/articles/" component={PostsPage} exact />
-          <Route path="/new-article" component={PostForm} exact />
-          <Route path="/sign-up" component={SignUpForm} exact />
-          <Route path="/sign-in" component={SignInForm} exact />
-          <Route path="/profile" component={ProfileEditForm} exact />
+          <Route path="/new-article" component={CreatePostForm} />
+          <Route path="/sign-up" component={SignUpForm} />
+          <Route path="/sign-in" component={SignInForm} />
+          <Route path="/profile" component={ProfileEditForm} />
           <Route
-            path="/:slug"
+            path="/articles/:slug"
             render={({ match }) => {
               const { slug } = match.params
               return <FullPostPage slug={slug} />
+            }}
+            exact
+          />
+          <Route
+            path="/articles/:slug/edit"
+            render={({ match }) => {
+              const { slug } = match.params
+              return <EditPostForm slug={slug} />
             }}
           />
         </Switch>
