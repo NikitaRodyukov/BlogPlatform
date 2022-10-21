@@ -14,14 +14,16 @@ export default function Header() {
   const dispatch = useDispatch()
   const token = localStorage.getItem('token')
 
-  const { user } = useSelector((state) => state.currentUser)
-  const signInStatus = useSelector((state) => state.signInStatus)
+  const {
+    currentUser: { user },
+    signInStatus: { status },
+  } = useSelector((state) => state)
 
   useEffect(() => {
     if (token !== null) {
       dispatch(getCurrentUser(token))
     }
-  }, [signInStatus])
+  }, [status])
 
   const userBlock = user && (
     <div className={classes['user-block']}>

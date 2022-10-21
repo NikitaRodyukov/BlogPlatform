@@ -12,9 +12,20 @@ const postArticle = (data, token) => (dispatch) => {
     type: 'POST_ARTICLE',
   })
 
+  dispatch({
+    type: 'SHOW_LOADER',
+  })
+
   fetch('https://blog.kata.academy/api/articles', requestOptions).then(
     async (response) => {
       const answer = await response.json()
+      dispatch({
+        type: 'REDIRECT_TRUE',
+      })
+
+      dispatch({
+        type: 'HIDE_LOADER',
+      })
 
       if (!response.ok) {
         dispatch({

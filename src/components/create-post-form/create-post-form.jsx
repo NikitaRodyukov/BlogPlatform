@@ -1,23 +1,23 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { useForm } from 'react-hook-form'
-import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { useState } from 'react'
-// import updateProfile from '../../actions/update-profile'
-// import getCurrentUser from '../../actions/get-current-user'
+import { useDispatch, useSelector } from 'react-redux'
 
 import postArticle from '../../actions/post-article'
+import { deleteTag, addTag, editTagValue } from '../helpers/index'
 
 import classes from './create-post-form.module.scss'
 
 export default function CreatePostForm() {
   const [tagKeyValue, addKeyValue] = useState(1)
   const [tags, editTagsArr] = useState([{ id: 0, value: '' }])
-  const [postStatus, editPostStatus] = useState(false)
-
   const dispatch = useDispatch()
-  const { user } = useSelector((state) => state.currentUser)
   const token = localStorage.getItem('token')
+  const redirectStatus = useSelector((state) => state.redirectStatus)
+  dispatch({
+    type: 'REDIRECT_FALSE',
+  })
 
   const {
     register,
@@ -28,36 +28,9 @@ export default function CreatePostForm() {
   const onSubmit = (data) => {
     data.tagList = tags.map(({ value }) => value)
     dispatch(postArticle(data, token))
-    editPostStatus(true)
   }
 
-  const deleteTag = (id) =>
-    editTagsArr((tagsList) => {
-      const idx = tagsList.findIndex((el) => id === el.id)
-
-      return [...tagsList.slice(0, idx), ...tagsList.slice(idx + 1)]
-    })
-
-  const addTag = (id) =>
-    editTagsArr((tagsList) => [...tagsList, { id, value: '' }])
-
-  const editTagValue = (id, text) =>
-    editTagsArr((tagsList) => {
-      const idx = tagsList.findIndex((el) => id === el.id)
-
-      const updatedItem = {
-        ...tagsList[idx],
-        value: text,
-      }
-
-      return [
-        ...tagsList.slice(0, idx),
-        updatedItem,
-        ...tagsList.slice(idx + 1),
-      ]
-    })
-
-  if (!user || postStatus) {
+  if (redirectStatus) {
     return <Redirect to="/" />
   }
 
@@ -126,7 +99,7 @@ export default function CreatePostForm() {
               <input
                 type="text"
                 defaultValue={value}
-                onChange={(e) => editTagValue(id, e.target.value)}
+                onChange={(e) => editTagValue(id, e.target.value, editTagsArr)}
               />
               <button
                 type="button"
@@ -135,7 +108,7 @@ export default function CreatePostForm() {
                   if (tags.length === 1) {
                     return
                   }
-                  deleteTag(id)
+                  deleteTag(id, editTagsArr)
                 }}
               >
                 Delete
@@ -147,7 +120,7 @@ export default function CreatePostForm() {
             className={classes['add-tag']}
             onClick={() => {
               addKeyValue((value) => value + 1)
-              addTag(tagKeyValue)
+              addTag(tagKeyValue, editTagsArr)
             }}
           >
             Add tag

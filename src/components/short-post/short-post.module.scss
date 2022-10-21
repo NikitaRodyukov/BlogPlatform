@@ -1,5 +1,6 @@
 .short-post {
   display: flex;
+  width: 100%;
   justify-content: space-between;
   margin-bottom: 1.6rem;
   padding: 1.4rem;
@@ -27,6 +28,11 @@
       flex-direction: row;
       align-items: center;
       justify-content: flex-start;
+
+      .favorited {
+        display: flex;
+        align-items: center;
+      }
 
       .favorites-count {
         margin-left: 0.5rem;
@@ -69,7 +75,7 @@
 
   .author {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: flex-end;
 
     .left-side {
@@ -160,30 +166,10 @@
 @media (max-width: 712px) {
   .short-post {
     .left-part {
+      margin: 0;
       .title {
         width: 45%;
       }
-    }
-  }
-}
-
-@media (max-width: 570px) {
-  .short-post {
-    flex-direction: column;
-
-    .left-part {
-      justify-content: center;
-      align-items: center;
-      margin: 0;
-
-      .top-part {
-        width: 80%;
-        justify-content: center;
-      }
-    }
-
-    .author {
-      justify-content: center;
     }
   }
 }

@@ -10,10 +10,11 @@ import getCurrentUser from '../../actions/get-current-user'
 import classes from './profile-edit-form.module.scss'
 
 export default function ProfileEditForm() {
+  const token = localStorage.getItem('token')
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.currentUser)
-  const token = localStorage.getItem('token')
   const signUpError = useSelector((state) => state.signUpStatus.errors || {})
+  const redirectStatus = useSelector((state) => state.redirectStatus)
 
   const {
     register,
@@ -25,7 +26,7 @@ export default function ProfileEditForm() {
   useEffect(() => {
     setFocus('username')
     dispatch({ type: 'CLEAR_ERROR' })
-  }, [setFocus])
+  }, [])
 
   const onSubmit = (data) => {
     if (data.image === '') {
@@ -41,12 +42,12 @@ export default function ProfileEditForm() {
     }
   }
 
-  if (!user) {
+  if (token === null || redirectStatus) {
     return <Redirect to="/" />
   }
 
   return (
-    <div className={classes['sign-up-form']}>
+    <div className={classes.form}>
       <h2>Edit Profile</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor="username">

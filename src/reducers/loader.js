@@ -1,15 +1,9 @@
 const loaderStatusReducer = (state = true, action) => {
   switch (action.type) {
-    case 'DATA_LOAD_TRUE':
+    case 'SHOW_LOADER':
       return true
 
-    case 'DATA_LOAD_FINISHED':
-      return false
-
-    case 'POST_LOAD_TRUE':
-      return true
-
-    case 'POST_LOADED':
+    case 'HIDE_LOADER':
       return false
 
     default:

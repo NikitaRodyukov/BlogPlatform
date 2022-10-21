@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from 'react-router-dom'
 
 import PostsPage from '../posts-page/posts-page'
 import Header from '../header/header'
@@ -38,6 +43,7 @@ function App() {
               return <EditPostForm slug={slug} />
             }}
           />
+          <Redirect to="/" />
         </Switch>
       </Router>
     </div>

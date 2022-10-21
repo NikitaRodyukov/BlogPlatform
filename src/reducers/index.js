@@ -7,6 +7,7 @@ import fullPostReducer from './get-full-post'
 import signUpReducer from './sign-up'
 import signInReducer from './sign-in'
 import currentUserReducer from './current-user'
+import redirectStatusReducer from './redirect-reducer'
 
 const allReducers = combineReducers({
   getPostsReducer,
@@ -16,6 +17,7 @@ const allReducers = combineReducers({
   signUpStatus: signUpReducer,
   signInStatus: signInReducer,
   currentUser: currentUserReducer,
+  redirectStatus: redirectStatusReducer,
 })
 
 export default allReducers

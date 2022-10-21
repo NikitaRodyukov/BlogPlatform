@@ -15,7 +15,9 @@ const postEditedArticle = (data, token, slug) => (dispatch) => {
   fetch(`https://blog.kata.academy/api/articles/${slug}`, requestOptions).then(
     async (response) => {
       const answer = await response.json()
-
+      dispatch({
+        type: 'REDIRECT_TRUE',
+      })
       if (!response.ok) {
         dispatch({
           type: 'POST_ARTICLE_ERROR',

@@ -1,44 +1,45 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { useForm } from 'react-hook-form'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-// import updateProfile from '../../actions/update-profile'
-// import getCurrentUser from '../../actions/get-current-user'
 
 import getFullPost from '../../actions/get-full-post'
 import postEditedArticle from '../../actions/post-edited-article'
+import { deleteTag, addTag, editTagValue } from '../helpers/index'
 
 import classes from './edit-post-form.module.scss'
 
 export default function EditPostForm({ slug }) {
   const dispatch = useDispatch()
-  const [tagKeyValue, addKeyValue] = useState(1)
-  const [tags, editTagsArr] = useState([])
-  const [postStatus, editPostStatus] = useState(false)
-
-  const { user } = useSelector((state) => state.currentUser)
   const token = localStorage.getItem('token')
-
-  const { title, description, body, tagList } = useSelector(
-    (state) => state.fullPost
-  )
+  const [tagKeyValue, addKeyValue] = useState(0)
+  const [tags, editTagsArr] = useState([])
+  const {
+    redirectStatus,
+    fullPost: { title, description, body, tagList },
+  } = useSelector((state) => state)
 
   useEffect(() => {
+    let tagId = 0
+
     dispatch(getFullPost(slug))
     const tagsToAdd =
-      !tagList &&
+      tagList &&
       tagList.map((value) => {
-        addKeyValue((v) => v + 1)
-        return { id: tagKeyValue, value }
+        const tag = { id: tagId, value }
+        tagId += 1
+        return tag
       })
 
-    if (!tagList.length && !tagsToAdd) {
+    addKeyValue(tagId)
+
+    if (!tagsToAdd) {
       editTagsArr((tagsList) => [...tagsList, { id: 0, value: '' }])
     } else {
       editTagsArr(tagsToAdd)
     }
-  }, [slug])
+  }, [tagList.length])
 
   const {
     register,
@@ -49,36 +50,9 @@ export default function EditPostForm({ slug }) {
   const onSubmit = (data) => {
     data.tagList = tags.map(({ value }) => value)
     dispatch(postEditedArticle(data, token, slug))
-    editPostStatus(true)
   }
 
-  const deleteTag = (id) =>
-    editTagsArr((tagsList) => {
-      const idx = tagsList.findIndex((el) => id === el.id)
-
-      return [...tagsList.slice(0, idx), ...tagsList.slice(idx + 1)]
-    })
-
-  const addTag = (id) =>
-    editTagsArr((tagsList) => [...tagsList, { id, value: '' }])
-
-  const editTagValue = (id, text) =>
-    editTagsArr((tagsList) => {
-      const idx = tagsList.findIndex((el) => id === el.id)
-
-      const updatedItem = {
-        ...tagsList[idx],
-        value: text,
-      }
-
-      return [
-        ...tagsList.slice(0, idx),
-        updatedItem,
-        ...tagsList.slice(idx + 1),
-      ]
-    })
-
-  if (!user || postStatus) {
+  if (redirectStatus) {
     return <Redirect to="/" />
   }
 
@@ -145,33 +119,36 @@ export default function EditPostForm({ slug }) {
         </label>
         <label htmlFor="tags" className={classes.tags}>
           Tags
-          {tags.map(({ id, value }) => (
-            <div className={classes.tag} key={id}>
-              <input
-                type="text"
-                defaultValue={value}
-                onChange={(e) => editTagValue(id, e.target.value)}
-              />
-              <button
-                type="button"
-                className={classes['delete-tag']}
-                onClick={() => {
-                  if (tags.length === 1) {
-                    return
+          {tags &&
+            tags.map(({ id, value }) => (
+              <div className={classes.tag} key={id}>
+                <input
+                  type="text"
+                  defaultValue={value}
+                  onChange={(e) =>
+                    editTagValue(id, e.target.value, editTagsArr)
                   }
-                  deleteTag(id)
-                }}
-              >
-                Delete
-              </button>
-            </div>
-          ))}
+                />
+                <button
+                  type="button"
+                  className={classes['delete-tag']}
+                  onClick={() => {
+                    if (tags.length === 1) {
+                      return
+                    }
+                    deleteTag(id, editTagsArr)
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
+            ))}
           <button
             type="button"
             className={classes['add-tag']}
             onClick={() => {
               addKeyValue((value) => value + 1)
-              addTag(tagKeyValue)
+              addTag(tagKeyValue, editTagsArr)
             }}
           >
             Add tag

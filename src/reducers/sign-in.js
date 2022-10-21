@@ -1,4 +1,7 @@
-const signInReducer = (state = {}, action) => {
+const signInReducer = (
+  state = { status: false, errors: { username: '', email: '' } },
+  action
+) => {
   const { type, data } = action
 
   switch (type) {
@@ -6,15 +9,16 @@ const signInReducer = (state = {}, action) => {
       localStorage.setItem('token', data)
       return { status: true }
 
+    case 'UPDATE_OK':
+      localStorage.setItem('token', data)
+      return { status: true }
+
     case 'SIGN_IN_ERROR':
       return data
 
-    case 'CLEAR_ERROR':
-      return {}
-
     case 'LOG_OUT':
       localStorage.removeItem('token')
-      return {}
+      return { status: false }
 
     default:
       return state

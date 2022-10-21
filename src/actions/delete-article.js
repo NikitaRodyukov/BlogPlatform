@@ -8,11 +8,15 @@ const deleteArticle = (token, slug) => (dispatch) => {
   }
 
   dispatch({
-    type: 'POST_ARTICLE',
+    type: 'SHOW_LOADER',
   })
 
   fetch(`https://blog.kata.academy/api/articles/${slug}`, requestOptions).then(
     async (response) => {
+      dispatch({
+        type: 'REDIRECT_TRUE',
+      })
+
       if (!response.ok) {
         const answer = await response.json()
         dispatch({
@@ -22,6 +26,10 @@ const deleteArticle = (token, slug) => (dispatch) => {
       } else {
         dispatch({
           type: 'POST_ARTICLE_OK',
+        })
+
+        dispatch({
+          type: 'HIDE_LOADER',
         })
       }
     }

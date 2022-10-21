@@ -9,6 +9,7 @@ const updateProfile = (data) => (dispatch) => {
     },
     body: JSON.stringify({ user: data }),
   }
+
   dispatch({
     type: 'UPDATE_PROFILE',
   })
@@ -26,6 +27,10 @@ const updateProfile = (data) => (dispatch) => {
         dispatch({
           type: 'RECEIVED_PROFILE',
           data: answer,
+        })
+
+        dispatch({
+          type: 'REDIRECT_TRUE',
         })
       }
       return answer

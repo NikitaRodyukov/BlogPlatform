@@ -22,7 +22,11 @@ export default function ShortPost({
   updatedAt,
 }) {
   const dispatch = useDispatch()
+  const token = localStorage.getItem('token')
+  const [logInErrror, setLogInError] = useState(false)
+  const currentPage = useSelector((state) => state.currentPage)
   let keyTag = 0
+
   const tags = tagList.map((tag) => {
     keyTag += 1
     if (tag === '') return null
@@ -32,11 +36,6 @@ export default function ShortPost({
       </div>
     )
   })
-
-  const [logInErrror, setLogInError] = useState(false)
-  const { user } = useSelector((state) => state.currentUser)
-  const token = localStorage.getItem('token')
-  const currentPage = useSelector((state) => state.currentPage)
 
   return (
     <div className={classes['short-post']}>
@@ -66,7 +65,7 @@ export default function ShortPost({
                   fontSize: '1.6rem',
                 }}
                 onClick={() => {
-                  if (!user) {
+                  if (!token) {
                     setLogInError(true)
                     return
                   }

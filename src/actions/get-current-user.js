@@ -8,6 +8,10 @@ const getCurrentUser = (token) => (dispatch) => {
   }
 
   dispatch({
+    type: 'SHOW_LOADER',
+  })
+
+  dispatch({
     type: 'GET_CURRENT_USER',
   })
 
@@ -24,6 +28,10 @@ const getCurrentUser = (token) => (dispatch) => {
         dispatch({
           type: 'UPDATE_OK',
           data: answer,
+        })
+
+        dispatch({
+          type: 'HIDE_LOADER',
         })
       }
       return answer

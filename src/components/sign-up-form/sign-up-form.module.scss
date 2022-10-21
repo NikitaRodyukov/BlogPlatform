@@ -57,6 +57,7 @@
   label[for='checkbox'] {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: flex-start;
     align-items: baseline;
     position: relative;
@@ -137,6 +138,7 @@
     background: #1890ff;
     border-radius: 4px;
     color: #ffffff;
+    cursor: pointer;
   }
 
   .redirect {

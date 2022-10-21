@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { useForm } from 'react-hook-form'
-import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
 
@@ -17,14 +16,8 @@ export default function SignUpForm() {
     register,
     handleSubmit,
     formState: { errors },
-    setFocus,
     getValues,
   } = useForm()
-
-  useEffect(() => {
-    setFocus('username')
-    dispatch({ type: 'CLEAR_ERROR' })
-  }, [setFocus])
 
   const onSubmit = (data) => {
     dispatch(signUp(data))
@@ -141,6 +134,7 @@ export default function SignUpForm() {
                 value: true,
                 message: 'Поле необходимо заполнить',
               },
+              validate: (v) => v === getValues('password'),
             })}
           />
           {getValues('repeat_password') !== getValues('password') && (
@@ -162,13 +156,13 @@ export default function SignUpForm() {
               },
             })}
           />
+          <p>I agree to the processing of my personal information</p>
+          <span className={classes.checkmark} />
           {errors.checkbox && (
             <p className={classes['error-message']}>
               {errors.checkbox.message}
             </p>
           )}
-          <p>I agree to the processing of my personal information</p>
-          <span className={classes.checkmark} />
         </label>
         <input type="submit" value="Create" />
       </form>

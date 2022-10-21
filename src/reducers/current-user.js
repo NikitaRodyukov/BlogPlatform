@@ -1,4 +1,6 @@
-const currentUserReducer = (state = {}, action) => {
+const defState = { user: { username: '', image: '', token: '', email: '' } }
+
+const currentUserReducer = (state = defState, action) => {
   const { type, data } = action
   switch (type) {
     case 'UPDATE_OK':
@@ -9,7 +11,8 @@ const currentUserReducer = (state = {}, action) => {
       return data
 
     case 'LOG_OUT':
-      return {}
+      localStorage.removeItem('token')
+      return defState
 
     default:
       return state
