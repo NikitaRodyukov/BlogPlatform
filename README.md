@@ -1,1 +1,1 @@
-it is ma finale project blog platforme
+https://blog-platform-ashy-beta.vercel.app/
