@@ -1,1 +1,1 @@
-https://blog-platform-219i20bvz-nikitarodyukov.vercel.app/
+https://blog-platform-ot79uhhhv-nikitarodyukov.vercel.app/1
