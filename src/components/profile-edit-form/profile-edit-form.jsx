@@ -29,8 +29,9 @@ export default function ProfileEditForm() {
   }, [])
 
   const onSubmit = (data) => {
-    if (data.image === '') {
+    if (!data.image) {
       const newData = JSON.parse(JSON.stringify(data))
+
       newData.image = user.image
       dispatch(updateProfile(newData))
     } else {

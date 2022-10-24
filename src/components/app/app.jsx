@@ -4,6 +4,7 @@ import {
   Route,
   Switch,
 } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 
 import PostsPage from '../posts-page/posts-page'
 import Header from '../header/header'
@@ -17,22 +18,22 @@ import EditPostForm from '../edit-post-form/edit-post-form'
 import './app.scss'
 
 function App() {
+  const dispatch = useDispatch()
   return (
     <div className="app">
       <Router>
         <Header />
         <Switch>
-          <Route path="/" component={PostsPage} exact />
-          <Route path="/articles/" component={PostsPage} exact />
-          <Route path="/new-article" component={CreatePostForm} />
           <Route path="/sign-up" component={SignUpForm} />
           <Route path="/sign-in" component={SignInForm} />
+          <Route path="/new-article" component={CreatePostForm} />
           <Route path="/profile" component={ProfileEditForm} />
           <Route
-            path="/articles/:slug"
+            path="/:page"
             render={({ match }) => {
-              const { slug } = match.params
-              return <FullPostPage slug={slug} />
+              const { page } = match.params
+              dispatch({ type: 'PAGE_NUMBER_UPDATE', page })
+              return <PostsPage page={Number(page)} />
             }}
             exact
           />
@@ -43,7 +44,14 @@ function App() {
               return <EditPostForm slug={slug} />
             }}
           />
-          <Redirect to="/" />
+          <Route
+            path="/articles/:slug"
+            render={({ match }) => {
+              const { slug } = match.params
+              return <FullPostPage slug={slug} />
+            }}
+          />
+          <Redirect to="/1" />
         </Switch>
       </Router>
     </div>

@@ -29,7 +29,7 @@ export default function ShortPost({
 
   const tags = tagList.map((tag) => {
     keyTag += 1
-    if (tag === '') return null
+    if (!tag) return null
     return (
       <div key={keyTag} className={classes.tag}>
         {tag}

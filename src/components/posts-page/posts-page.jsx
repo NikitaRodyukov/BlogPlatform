@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { Pagination, Spin } from 'antd'
+import { withRouter } from 'react-router-dom'
 
 import getPosts from '../../actions/get-posts'
 import updateCurrentPage from '../../actions/update-current-page'
@@ -8,19 +9,18 @@ import ShortPost from '../short-post/short-post'
 
 import classes from './posts-page.module.scss'
 
-export default function PostsPage() {
+function PostsPage({ history, page: currentPage }) {
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(updateCurrentPage(currentPage))
+    dispatch(getPosts(currentPage - 1))
+  }, [])
+
   const {
-    currentPage,
     showLoader,
     getPostsReducer: { articles, articlesCount },
   } = useSelector((state) => state)
-
-  let postKey = -1
-
-  useEffect(() => {
-    dispatch(getPosts(currentPage - 1))
-  }, [])
 
   const postsToRender =
     articles &&
@@ -34,22 +34,19 @@ export default function PostsPage() {
         author,
         slug,
         updatedAt,
-      }) => {
-        postKey += 1
-        return (
-          <ShortPost
-            key={postKey}
-            title={title}
-            description={description}
-            tagList={tagList}
-            favorited={favorited}
-            favoritesCount={favoritesCount}
-            author={author}
-            slug={slug}
-            updatedAt={updatedAt}
-          />
-        )
-      }
+      }) => (
+        <ShortPost
+          key={slug}
+          title={title}
+          description={description}
+          tagList={tagList}
+          favorited={favorited}
+          favoritesCount={favoritesCount}
+          author={author}
+          slug={slug}
+          updatedAt={updatedAt}
+        />
+      )
     )
 
   return (
@@ -63,6 +60,7 @@ export default function PostsPage() {
             onChange={(page) => {
               dispatch(updateCurrentPage(page))
               dispatch(getPosts(page - 1))
+              history.push(`/${page}`)
             }}
             current={currentPage}
             size="small"
@@ -77,3 +75,5 @@ export default function PostsPage() {
     </div>
   )
 }
+
+export default withRouter(PostsPage)

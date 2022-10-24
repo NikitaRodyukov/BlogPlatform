@@ -23,7 +23,6 @@ export default function FullPostPage({ slug }) {
     redirectStatus,
   } = useSelector((state) => state)
 
-  let currentUserisAuthor = false
   let keyTag = 0
 
   useEffect(() => {
@@ -42,9 +41,7 @@ export default function FullPostPage({ slug }) {
     author: { username, image },
   } = useSelector((state) => state.fullPost)
 
-  if (username === user.username) {
-    currentUserisAuthor = true
-  }
+  const currentUserisAuthor = username === user.username
 
   const tags =
     tagList &&
